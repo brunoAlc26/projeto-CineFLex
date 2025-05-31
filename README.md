@@ -13,4 +13,4 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Link do Deploy do projeto
 
-https://projeto-cine-flex-red.vercel.app
+https://projeto-cine-f-lex.vercel.app
