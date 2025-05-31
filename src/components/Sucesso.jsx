@@ -4,34 +4,31 @@ import { useLocation, useNavigate } from "react-router-dom";
 function Sucesso() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { nome, cpf, assentos } = location.state || {};
 
-  const { filme, sessao, assentos, nome, cpf } = location.state || {};
+  console.log("location.state:", location.state); 
 
-  if (!filme) {
-    navigate("/");
-    return null;
+  if (!location.state) {
+    return <h2>Erro: Dados não encontrados. Volte para a tela inicial.</h2>;
   }
 
   return (
     <Container>
-        <Titulo>Pedido finalizado!</Titulo>
       <Pedido>
-        <Subtitulo>Filme e sessão </Subtitulo>
-            <Linha>_____________________________________</Linha>
+        <h2>Pedido feito com sucesso!</h2>
+<div>
+  <strong>Assentos:</strong>
+  {assentos.map((nome, i) => (
+    <div key={i}>Assento {nome}</div>
+  ))}
+</div>
 
-        <div>{filme}</div>
-        <div> {sessao}</div>
-        <Subtitulo>Assentos:</Subtitulo>
-            <Linha>_____________________________________</Linha>
-        <div>Assento(s) {assentos.join(", ")}</div>
-        <Subtitulo>Comprador(a):</Subtitulo>
-            <Linha>_____________________________________</Linha>
-        <div> Nome: {nome}</div>
-        <div> CPF: {cpf}</div>
-
-        <BotaoVoltar onClick={() => navigate("/")}>
-          Voltar para a página inicial
-        </BotaoVoltar>
+        <div>
+          <strong>Comprador(a):</strong>
+          <div>Nome: {nome}</div>
+          <div>CPF: {cpf}</div>
+        </div>
+        <BotaoVoltar onClick={() => navigate("/")}>Voltar para início</BotaoVoltar>
       </Pedido>
     </Container>
   );
@@ -44,21 +41,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const Titulo = styled.div`
-  color: #9DB899;
-  font-size: 200%;
-`;
-
-const Subtitulo = styled.div`
-  color: #e2877e;
-  font-size: 200%;
-`;
-
-const Linha = styled.div`
-  color: #49535E;
-  font-size: 100%;
 `;
 
 const Pedido = styled.div`

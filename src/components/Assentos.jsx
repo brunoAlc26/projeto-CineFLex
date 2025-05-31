@@ -31,32 +31,45 @@ function Assentos() {
     }
   }
 
-  function Reservas() {
-    if (selecionados.length === 0) {
-      alert("Você precisa selecionar pelo menos uma cadeira.");
-      return;
-    }
-    if (cpf.trim() === "") {
-      alert("Por favor, preencha o CPF do comprador.");
-      return;
-    }
-    if (nome.trim() === "") {
-      alert("Por favor, preencha o nome do comprador.");
-      return;
-    }
-    navigate("/confirmacao", {
-      state: {
-        filme,
-        sessao,
-        assentos: selecionados.map(id => {
-          const assento = assentos.find(a => a.id === id);
-          return assento ? assento.name : id;
-        }),
-        nome,
-        cpf,
-      }
-    });
+
+function Reservas() {
+  if (selecionados.length === 0) {
+    alert("Você precisa selecionar pelo menos uma cadeira.");
+    return;
   }
+  if (nome.trim() === "") {
+    alert("Por favor, preencha o nome do comprador.");
+    return;
+  }
+  if (cpf.trim() === "") {
+    alert("Por favor, preencha o CPF do comprador.");
+    return;
+  }
+
+  const dadosReserva = {
+    ids: selecionados,
+    name: nome,
+    cpf: cpf
+  };
+
+  axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", dadosReserva)
+    .then(() => {
+navigate("/confirmacao", {
+  state: {
+    nome,
+    cpf,
+    assentos: assentos
+      .filter(assento => selecionados.includes(assento.id))
+      .map(assento => assento.name)
+  }
+});
+
+    })
+    .catch((err) => {
+      console.log("Erro ao reservar assentos:", err);
+      alert("Ocorreu um erro ao reservar os assentos.");
+    });
+}
 
   return (
     <Container>
